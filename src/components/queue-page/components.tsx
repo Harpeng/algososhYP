@@ -75,6 +75,7 @@ export const QueuePage: FC = () => {
           onClick={addElement}
           isLoader={loader.add}
           disabled={!!!inputValue || queue.isFull()}
+          data="add-button"
         />
         <Button
           text="Удалить"
@@ -82,6 +83,7 @@ export const QueuePage: FC = () => {
           onClick={deleteElement}
           isLoader={loader.delete}
           disabled={queue.isEmpty()}
+          data="delete-button"
         />
         <Button
           text="Очистить"
@@ -90,6 +92,7 @@ export const QueuePage: FC = () => {
           extraClass={style.button}
           isLoader={loader.clear}
           disabled={queue.isEmpty()}
+          data="clear-button"
         />
       </div>
       <ul className={style.symbolList}>

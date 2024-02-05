@@ -191,6 +191,7 @@ export const ListPage: FC = () => {
             name="value"
             value={inputValue.value}
             onChange={onChange}
+            data='input-value'
           />
           <Button
             type="button"
@@ -201,6 +202,7 @@ export const ListPage: FC = () => {
               !!!inputValue.value || loader.disabled || array.length === 7
             }
             isLoader={loader.addToHead}
+            data='add-to-head-button'
           />
           <Button
             type="button"
@@ -211,6 +213,7 @@ export const ListPage: FC = () => {
               !!!inputValue.value || loader.disabled || array.length === 7
             }
             isLoader={loader.addToTail}
+            data='add-to-tail-button'
           />
           <Button
             type="button"
@@ -219,6 +222,7 @@ export const ListPage: FC = () => {
             onClick={handleDeleteHead}
             disabled={!!!array || loader.disabled || array.length === 0}
             isLoader={loader.deleteInHead}
+            data='delete-from-head-button'
           />
           <Button
             type="button"
@@ -227,6 +231,7 @@ export const ListPage: FC = () => {
             onClick={handleDeleteTail}
             disabled={!!!array || loader.disabled || array.length === 0}
             isLoader={loader.deleteInTail}
+            data='delete-from-tail-button'
           />
         </div>
         <div className={style.form__container}>
@@ -238,6 +243,7 @@ export const ListPage: FC = () => {
             max={array.length - 1}
             value={inputValue.index}
             onChange={onChange}
+            data='input-index'
           />
           <Button
             type="button"
@@ -251,6 +257,7 @@ export const ListPage: FC = () => {
               Number(inputValue.index) < 0
             }
             isLoader={loader.addToIndex}
+            data='add-by-index-button'
           />
           <Button
             type="button"
@@ -264,6 +271,7 @@ export const ListPage: FC = () => {
               Number(inputValue.index) < 0
             }
             isLoader={loader.deleteToIndex}
+            data='delete-by-index-button'
           />
         </div>
       </div>

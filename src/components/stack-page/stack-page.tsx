@@ -85,6 +85,7 @@ export const StackPage: React.FC = () => {
           disabled={!values}
           onClick={(e) => handlePush(values, e)}
           extraClass="mr-6"
+          data="add-button"
         />
         <Button
           text={"Удалить"}
@@ -93,6 +94,7 @@ export const StackPage: React.FC = () => {
           disabled={currIndex === 0}
           onClick={(e) => handlePop(e)}
           extraClass="mr-40"
+          data="delete-button"
         />
         <Button
           text={"Очистить"}
@@ -100,6 +102,7 @@ export const StackPage: React.FC = () => {
           disabled={currIndex === 0}
           isLoader={loader.clear}
           onClick={(e) => reset(e)}
+          data="clear-button"
         />
       </form>
       {stackToRender && (

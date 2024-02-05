@@ -35,6 +35,7 @@ export const FibonacciPage: React.FC = () => {
       await setDelay(500);
     }
     setIsLoading(false);
+    setValues("");
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
