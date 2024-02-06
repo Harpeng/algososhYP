@@ -1,4 +1,4 @@
-import React, { MouseEvent, ChangeEvent, useMemo, useState } from "react";
+import React, { MouseEvent, ChangeEvent, useMemo, useState, FormEvent } from "react";
 import type { TStackElem } from "../../types/element-states";
 import { ElementStates } from "../../types/element-states";
 import { Button } from "../ui/button/button";
@@ -29,7 +29,9 @@ export const StackPage: React.FC = () => {
     setValues(e.target.value);
   };
 
-  const handlePush = async (elem: string, e: MouseEvent<HTMLButtonElement>) => {
+
+  const handlePush = async (elem: string, e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     setLoader({ ...loader, add: true });
 
     stack.push({ letter: elem, state: ElementStates.Changing });
@@ -59,6 +61,7 @@ export const StackPage: React.FC = () => {
   };
 
   const reset = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setLoader({ ...loader, clear: true });
     stack.reset();
     setStackToRender([...stack.getElements()]);
@@ -68,7 +71,7 @@ export const StackPage: React.FC = () => {
 
   return (
     <SolutionLayout title="Стек">
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={(e) => handlePush(values, e)}>
         <Input
           maxLength={4}
           isLimitText={true}
@@ -80,10 +83,9 @@ export const StackPage: React.FC = () => {
         />
         <Button
           text={"Добавить"}
-          type="button"
+          type="submit"
           isLoader={loader.add}
           disabled={!values}
-          onClick={(e) => handlePush(values, e)}
           extraClass="mr-6"
           data="add-button"
         />

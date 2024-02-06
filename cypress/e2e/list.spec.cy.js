@@ -1,4 +1,6 @@
-import { inputValue, inputIndex,addToHeadButton, addToTailButton, deleteByIndexButton, addByIndexButton, deleteFromHeadButton, deleteFromTailButton, circle, circleContent, delay, shortDelay } from "../constants/constants";
+import { inputValue, inputIndex,addToHeadButton, addToTailButton, deleteByIndexButton, addByIndexButton, deleteFromHeadButton, deleteFromTailButton, circle, circleContent, disabled, notDisabled, circleSmall, circleChanging, circleModified, circleDefault, circleDefaultClass, circleChangingClass } from "../constants/constants";
+import {SHORT_DELAY_IN_MS} from '../../src/constants/delay.ts'
+
 
 
 const getDataFromCircle = (array) => {
@@ -19,18 +21,18 @@ const getDataFromCircle = (array) => {
     it("все кнопки при пустом инпуте заблокированы", () => {
       cy.get(inputValue).should("have.value", "");
       cy.get(inputIndex).should("have.value", "");
-      cy.get(addToHeadButton).should("be.disabled");
-      cy.get(addToTailButton).should("be.disabled");
-      cy.get(deleteFromHeadButton).should("not.be.disabled");
-      cy.get(deleteFromTailButton).should("not.be.disabled");
-      cy.get(addByIndexButton).should("be.disabled");
-      cy.get(deleteByIndexButton).should("be.disabled");
+      cy.get(addToHeadButton).should(disabled);
+      cy.get(addToTailButton).should(disabled);
+      cy.get(deleteFromHeadButton).should(notDisabled);
+      cy.get(deleteFromTailButton).should(notDisabled);
+      cy.get(addByIndexButton).should(disabled);
+      cy.get(deleteByIndexButton).should(disabled);
     });
   
     it("Удаление элемента из head работает корректно", () => {
       let circleData = [];
       getDataFromCircle(circleData);
-      cy.get(deleteFromHeadButton).should("not.be.disabled");
+      cy.get(deleteFromHeadButton).should(notDisabled);
       cy.get(deleteFromHeadButton).click();
       // eslint-disable-next-line jest/valid-expect-in-promise
       cy.get(deleteFromHeadButton)
@@ -45,22 +47,22 @@ const getDataFromCircle = (array) => {
       });
       cy.get(circleContent).then((item) => {
         cy.get(item[0])
-          .get('[class*="circle_small"]')
+          .get(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[0])
-          .get('[class*="circle_small"]')
+          .get(circleSmall)
           .children()
           .should("have.text", circleData[0]);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
     });
   
     it("Удаление элемента из tail работает корректно", () => {
       let circleData = [];
       getDataFromCircle(circleData);
-      cy.get(deleteFromTailButton).should("not.be.disabled");
+      cy.get(deleteFromTailButton).should(notDisabled);
       cy.get(deleteFromTailButton).click();
       // eslint-disable-next-line jest/valid-expect-in-promise
       cy.get(deleteFromTailButton)
@@ -75,22 +77,22 @@ const getDataFromCircle = (array) => {
       });
       cy.get(circleContent).then((item) => {
         cy.get(item[circleData.length - 1])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[circleData.length - 1])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .children()
           .should("have.text", circleData[circleData.length - 1]);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
     });
   
     it("Добавление элемента в head работает корректно", () => {
       const number = "1";
       cy.get(inputValue).type(number);
-      cy.get(addToHeadButton).should("not.be.disabled");
+      cy.get(addToHeadButton).should(notDisabled);
       cy.get(addToHeadButton).click();
       // eslint-disable-next-line jest/valid-expect-in-promise
       cy.get(addToHeadButton)
@@ -98,25 +100,25 @@ const getDataFromCircle = (array) => {
         .then((classList) => expect(classList).contains("loader"));
       cy.get(circleContent).then((item) => {
         cy.get(item[0])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
-        cy.get(item[0]).find('[class*="circle_small"]').children().should("have.text", number);
+          .then((classList) => expect(classList).contains(circleChanging));
+        cy.get(item[0]).find(circleSmall).children().should("have.text", number);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circle).then((item) => {
         cy.get(item[0])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_modified"));
+          .then((classList) => expect(classList).contains(circleModified));
         cy.get(item[0]).children().should("have.text", number);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circle).then((item) => {
         cy.get(item[0])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_default"));
+          .then((classList) => expect(classList).contains(circleDefault));
       });
     });
   
@@ -125,7 +127,7 @@ const getDataFromCircle = (array) => {
       let circleData = [];
       getDataFromCircle(circleData);
       cy.get(inputValue).type(number);
-      cy.get(addToTailButton).should("not.be.disabled");
+      cy.get(addToTailButton).should(notDisabled);
       cy.get(addToTailButton).click();
       // eslint-disable-next-line jest/valid-expect-in-promise
       cy.get(addToTailButton)
@@ -133,28 +135,28 @@ const getDataFromCircle = (array) => {
         .then((classList) => expect(classList).contains("loader"));
       cy.get(circleContent).then((item) => {
         cy.get(item[circleData.length - 1])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[circleData.length - 1])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .children()
           .should("have.text", number);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circle).then((item) => {
         cy.get(item[circleData.length])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_modified"));
+          .then((classList) => expect(classList).contains(circleModified));
         cy.get(item[circleData.length]).children().should("have.text", number);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circle).then((item) => {
         cy.get(item[circleData.length])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_default"));
+          .then((classList) => expect(classList).contains(circleDefault));
       });
     });
   
@@ -163,7 +165,7 @@ const getDataFromCircle = (array) => {
       getDataFromCircle(circleData);
       let index = 1;
       cy.get(inputIndex).type(index);
-      cy.get(deleteByIndexButton).should("not.be.disabled");
+      cy.get(deleteByIndexButton).should(notDisabled);
       cy.get(deleteByIndexButton).click();
       // eslint-disable-next-line jest/valid-expect-in-promise
       cy.get(deleteByIndexButton)
@@ -172,43 +174,43 @@ const getDataFromCircle = (array) => {
       cy.get(circle).then((item) => {
         cy.get(item[0])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
       });
       cy.get(circle).then((item) => {
         cy.get(item[0])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[1])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
       });
       cy.get(circle).then((item) => {
         cy.get(item[0])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[1])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_default"));
+          .then((classList) => expect(classList).contains(circleDefault));
         cy.get(item[1]).children().should("have.text", "");
       });
       cy.get(circleContent).then((item) => {
         cy.get(item[index])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[1])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .children()
           .should("have.text", circleData[index]);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(inputIndex).should("have.text", "");
-      cy.get(deleteByIndexButton).should("be.disabled");
+      cy.get(deleteByIndexButton).should(disabled);
     });
   
     it("Добавление элемента по индексу работает корректно", () => {
@@ -218,58 +220,58 @@ const getDataFromCircle = (array) => {
       let number = "1";
       cy.get(inputIndex).type(index);
       cy.get(inputValue).type(number);
-      cy.get(addByIndexButton).should("not.be.disabled");
+      cy.get(addByIndexButton).should(notDisabled);
       cy.get(addByIndexButton).click();
       // eslint-disable-next-line jest/valid-expect-in-promise
       cy.get(addByIndexButton)
         .invoke("attr", "class")
         .then((classList) => expect(classList).contains("loader"));
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circleContent).then((item) => {
         cy.get(item[0])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
-        cy.get(item[0]).find('[class*="circle_small"]').children().should("have.text", number);
+          .then((classList) => expect(classList).contains(circleChanging));
+        cy.get(item[0]).find(circleSmall).children().should("have.text", number);
         cy.get(item[0])
-          .find(`[class*=${"circle_default"}]`)
+          .find(circleDefaultClass)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_default"));
+          .then((classList) => expect(classList).contains(circleDefault));
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circleContent).then((item) => {
         cy.get(item[0])
-          .find(`[class*=${"circle_changing"}]`)
+          .find(circleChangingClass)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
+          .then((classList) => expect(classList).contains(circleChanging));
         cy.get(item[1])
-          .find(`[class*=${"circle_default"}]`)
+          .find(circleDefaultClass)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_default"));
+          .then((classList) => expect(classList).contains(circleDefault));
         cy.get(item[1])
-          .find('[class*="circle_small"]')
+          .find(circleSmall)
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_changing"));
-        cy.get(item[1]).find('[class*="circle_small"]').children().should("have.text", number);
+          .then((classList) => expect(classList).contains(circleChanging));
+        cy.get(item[1]).find(circleSmall).children().should("have.text", number);
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circle).then((item) => {
         cy.get(item[1])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_modified"));
+          .then((classList) => expect(classList).contains(circleModified));
       });
       // eslint-disable-next-line testing-library/await-async-utils
-      cy.wait(shortDelay);
+      cy.wait(SHORT_DELAY_IN_MS);
       cy.get(circle).then((item) => {
         cy.get(item[1])
           .invoke("attr", "class")
-          .then((classList) => expect(classList).contains("circle_default"));
+          .then((classList) => expect(classList).contains(circleDefault));
       });
       cy.get(inputIndex).should("have.text", "");
       cy.get(inputValue).should("have.text", "");
-      cy.get(addByIndexButton).should("be.disabled");
+      cy.get(addByIndexButton).should(disabled);
     });
   });

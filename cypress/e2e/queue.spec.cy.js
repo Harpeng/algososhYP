@@ -1,4 +1,6 @@
-import { input, circle, circleContent, addButton, deleteButton, clearButton, delay, shortDelay } from "../constants/constants";
+import { input, circle, circleContent, addButton, deleteButton, clearButton, disabled, notDisabled, circleChanging, circleDefault } from "../constants/constants";
+import {SHORT_DELAY_IN_MS, LONG_DELAY_IN_MS} from '../../src/constants/delay.ts'
+
 const array = ["1", "2", "3"];
 
 describe("Проверка визуализации структуры данных 'Очередь'", () => {
@@ -8,29 +10,29 @@ describe("Проверка визуализации структуры данн�
   
     it("кнопки заблокированы при пустом инпуте", () => {
       cy.get(input).should("have.value", "");
-      cy.get(addButton).should("be.disabled");
-      cy.get(deleteButton).should("be.disabled");
-      cy.get(clearButton).should("be.disabled");
+      cy.get(addButton).should(disabled);
+      cy.get(deleteButton).should(disabled);
+      cy.get(clearButton).should(disabled);
     });
 
     const addItem = (value) => {
         cy.get(input).type(value);
-        cy.get(addButton).should("not.be.disabled");
+        cy.get(addButton).should(notDisabled);
         cy.get(addButton).click();
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
       };
   
       it("Ограничение длинны строки в поле ввода работает корректно", () => {
         cy.get(input).type("hello");
-        cy.get(addButton).should("not.be.disabled");
+        cy.get(addButton).should(notDisabled);
         cy.get(input).should("have.value", "hell");
       });
     
       it("Добавление элементов в очередь работает корректно", () => {
        
         cy.get(input).type("1");
-        cy.get(addButton).should("not.be.disabled");
+        cy.get(addButton).should(notDisabled);
         cy.get(addButton).click();
         // eslint-disable-next-line jest/valid-expect-in-promise
         cy.get(addButton)
@@ -39,10 +41,10 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[0])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_changing"));
+            .then((classList) => expect(classList).contains(circleChanging));
         });
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
         cy.get(circleContent).then((item) => {
           cy.get(item[0]).children("div:first").should("have.text", "head");
           cy.get(item[0]).children("div:last").should("have.text", "tail");
@@ -50,18 +52,18 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[0])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_default"));
+            .then((classList) => expect(classList).contains(circleDefault));
         });
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("not.be.disabled");
-        cy.get(clearButton).should("not.be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(notDisabled);
+        cy.get(clearButton).should(notDisabled);
     
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(delay);
+        cy.wait(LONG_DELAY_IN_MS);
         
         cy.get(input).type("2");
-        cy.get(addButton).should("not.be.disabled");
+        cy.get(addButton).should(notDisabled);
         cy.get(addButton).click();
         // eslint-disable-next-line jest/valid-expect-in-promise
         cy.get(addButton)
@@ -70,10 +72,10 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[1])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_changing"));
+            .then((classList) => expect(classList).contains(circleChanging));
         });
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
         cy.get(circleContent).then((item) => {
           cy.get(item[0]).children("div:first").should("have.text", "head");
           cy.get(item[0]).children("div:last").should("not.have.text", "tail");
@@ -82,18 +84,18 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[1])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_default"));
+            .then((classList) => expect(classList).contains(circleDefault));
         });
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("not.be.disabled");
-        cy.get(clearButton).should("not.be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(notDisabled);
+        cy.get(clearButton).should(notDisabled);
     
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(delay);
+        cy.wait(LONG_DELAY_IN_MS);
         
         cy.get(input).type("3");
-        cy.get(addButton).should("not.be.disabled");
+        cy.get(addButton).should(notDisabled);
         cy.get(addButton).click();
         // eslint-disable-next-line jest/valid-expect-in-promise
         cy.get(addButton)
@@ -102,10 +104,10 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[2])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_changing"));
+            .then((classList) => expect(classList).contains(circleChanging));
         });
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
         cy.get(circleContent).then((item) => {
           cy.get(item[0]).children("div:first").should("have.text", "head");
           cy.get(item[1]).children("div:last").should("not.have.text", "tail");
@@ -114,19 +116,19 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[2])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_default"));
+            .then((classList) => expect(classList).contains(circleDefault));
         });
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("not.be.disabled");
-        cy.get(clearButton).should("not.be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(notDisabled);
+        cy.get(clearButton).should(notDisabled);
       });
     
         it("Удаление из очереди работает корректно", () => {
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("be.disabled");
-        cy.get(clearButton).should("be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(disabled);
+        cy.get(clearButton).should(disabled);
     
         // eslint-disable-next-line array-callback-return
         array.map((item) => {
@@ -134,7 +136,7 @@ describe("Проверка визуализации структуры данн�
         });
     
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(delay);
+        cy.wait(LONG_DELAY_IN_MS);
     
         cy.get(deleteButton).click();
         // eslint-disable-next-line jest/valid-expect-in-promise
@@ -144,10 +146,10 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[0])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_changing"));
+            .then((classList) => expect(classList).contains(circleChanging));
         });
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
         cy.get(circleContent).then((item) => {
           cy.get(item[0]).children("div:first").should("not.have.text", "head");
           cy.get(item[1]).children("div:first").should("have.text", "head");
@@ -156,19 +158,19 @@ describe("Проверка визуализации структуры данн�
         cy.get(circle).then((item) => {
           cy.get(item[0])
             .invoke("attr", "class")
-            .then((classList) => expect(classList).contains("circle_default"));
+            .then((classList) => expect(classList).contains(circleDefault));
         });
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("not.be.disabled");
-        cy.get(clearButton).should("not.be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(notDisabled);
+        cy.get(clearButton).should(notDisabled);
       });
     
       it("Очистка из очереди работает корректно", () => {
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("be.disabled");
-        cy.get(clearButton).should("be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(disabled);
+        cy.get(clearButton).should(disabled);
     
         // eslint-disable-next-line array-callback-return
         array.map((item) => {
@@ -176,7 +178,7 @@ describe("Проверка визуализации структуры данн�
         });
     
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(delay);
+        cy.wait(LONG_DELAY_IN_MS);
     
         cy.get(clearButton).click();
         // eslint-disable-next-line jest/valid-expect-in-promise
@@ -184,11 +186,11 @@ describe("Проверка визуализации структуры данн�
           .invoke("attr", "class")
           .then((classList) => expect(classList).contains("loader"));
         // eslint-disable-next-line testing-library/await-async-utils
-        cy.wait(shortDelay);
+        cy.wait(SHORT_DELAY_IN_MS);
         cy.get(input).should("have.value", "");
-        cy.get(addButton).should("be.disabled");
-        cy.get(deleteButton).should("be.disabled");
-        cy.get(clearButton).should("be.disabled");
+        cy.get(addButton).should(disabled);
+        cy.get(deleteButton).should(disabled);
+        cy.get(clearButton).should(disabled);
         cy.get(circle).children().nextAll().should('not.exist');
     });
     
